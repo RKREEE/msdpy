@@ -270,6 +270,58 @@ class General(commands.Cog):
 	@commands.command(hidden=True)
 	async def someone(self, ctx):
 		await ctx.send(choice(ctx.guild.members).mention)
+					 
+					 
+	@commands.command(aliases=["vfindseed", "visualfindseed", "vfs"])
+async def findseedbutvisual(self, ctx):
+        """Test your luck in Minecraft but visual."""
+        ignore_cooldown = [745481731133669476, 747984453585993808]
+        if ctx.guild.id in ignore_cooldown:
+            ctx.command.reset_cooldown(ctx)
+
+        rows = {
+            0: [0, 0, 0],
+            1: [0, 0, 0],
+            2: [0, 0, 0],
+            3: [0, 0, 0],
+        }
+        emojis = [
+            "<:empty:755432610984886332>",
+            "<:portal:755432641335001238>",
+            "<:eyess:755432579905093683>",
+        ]
+        portalframe = ""
+        for r in range(4):
+            for e in range(3):
+                randomness = randint(1, 10)
+                if randomness <= 1:
+                    rows[r][e] = 1
+        for i in range(4):
+            if i == 0 or i == 3:
+                portalframe += f" \{rows[i][0]}\{rows[i][1]}\{rows[i][2]}\n"
+            else:
+                if i == 2:
+                    pass
+                else:
+                    for e in range(3):
+                        portalframe += f"\{rows[i][e]}   \{rows[i+1][e]}\n"
+        portalframe = portalframe.replace(" ", emojis[0])
+        portalframe = portalframe.replace(r"\0", emojis[1])
+        portalframe = portalframe.replace(r"\1", emojis[2])
+        # print(portalframe)
+        e = discord.Embed(
+            title="findseed but visual",
+            description=f"Your seed looks like: \n\n{portalframe}",
+            color=discord.Colour(440052),
+        )
+        e.set_author(
+            name=f"{ctx.message.author.name}#{ctx.message.author.discriminator}",
+            icon_url=ctx.message.author.avatar_url,
+        )
+        await ctx.send(embed=e)
+        # await ctx.send(
+        #     f"{ctx.message.author.mention} -> your seed is a {totalEyes} eye"
+        # )
 
 	@commands.Cog.listener()
 	async def on_message(self, msg):
